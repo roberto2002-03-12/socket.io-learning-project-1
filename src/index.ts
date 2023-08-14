@@ -19,27 +19,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 io.on("connection", socket => {
-  // console.log("Users connected: ", io.engine.clientsCount)
-  // console.log("User connected id: ", socket.id);
-  // socket.on('disconnect'
-  // son eventos establecidos por defecto, no porque se me haya venido la gana
-  // declaras el evento que puede ser connected o disconnected y de este puedes
-  // realizar acciones custom que desees.
-  // socket.on('disconnect', () => {
-  //   console.log("The user with id: ", socket.id, " has disconnected");
-  // });
 
-  socket.conn.once("upgrade", () => {
-    console.log("Hemos pasado de HTTP Long-Polling a", socket
-    .conn.transport.name);
-  });
-
-  // emitir un evento basico
-  socket.emit("welcome", "negros nigga nigger");
-  // recibir evento creado por lado de cliente
-  // socket.on("server", data => console.log(data));
-  // crear un evento para todos
-  io.emit("everyone", socket.id + " se ha conectado");
 });
 
 httpServer.listen(3000);
