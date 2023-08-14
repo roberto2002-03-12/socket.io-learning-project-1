@@ -1,0 +1,31 @@
+{
+  "name": "socket-io",
+  "version": "1.0.0",
+  "description": "Curso de platzi",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon",
+    "build": "tsc",
+    "start": "node ./dist/index.js"
+  },
+  "keywords": [
+    "socket",
+    "io",
+    "websocket",
+    "typescript",
+    "node.js"
+  ],
+  "author": "Emilio Roberto Contreras Gonzales",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2"
+  }
+}
