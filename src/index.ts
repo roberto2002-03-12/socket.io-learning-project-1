@@ -20,6 +20,15 @@ app.get('/', (req: Request, res: Response) => {
 
 io.on("connection", socket => {
 
+  socket.on("circle position", position => {
+    // crear un evento para todos los clientes
+    // io.emit("move circle", position);
+    // un broadcast sirve para crear un evento
+    // que todos los clientes lo van a ver menos 
+    // la persona que realiza dicha acción
+    socket.broadcast.emit("move circle", position);
+  });
+
 });
 
 httpServer.listen(3000);
