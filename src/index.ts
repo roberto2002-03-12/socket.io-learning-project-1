@@ -1,7 +1,11 @@
 import express, { Request, Response } from 'express'
 import path from 'path'
 import { createServer } from 'http';
-import { Server, Socket } from 'socket.io';
+import { Server, Socket, 
+  // importar tipeados
+  Namespace,
+} from 'socket.io';
+import { DefaultEventsMap } from 'socket.io/dist/typed-events';
 
 interface ExtendedSocket extends Socket {
   connectedRoom?: string;
@@ -22,44 +26,33 @@ app.get('/', (req: Request, res: Response) => {
   res.sendFile(__dirname + "/views/index.html");
 });
 
-io.on("connection", (socket: ExtendedSocket) => {
+// no podemos hacer lo de esta manera porque sino envía al 
+// namespace por defecto
+// io.on("connection", (socket: ExtendedSocket) => {
 
-  socket.connectedRoom = "";
+  /*
+    los namespace son grupos, similar a salas de chat, pero
+    no lo son, una sala de chat puedes unir a personas especificas
+    para hablar.
 
-  socket.on("connect to room", room => {
+    ahora con namespace se puede hacer es crear un namespace donde
+    solo ingresen los admins y de ahí crear una sala de chat con
+    ciertos admins.
 
-    // antes de meterlo a una sala hay que sacarlo al que estaba
-    socket.leave(socket.connectedRoom!);
+    este es un ejemplo de caso de namespace
+  */
 
-    switch(room) {
-      case "room1":
-        // si no existe va crear la sala
-        socket.join("room1");
-        socket.connectedRoom = "room1";
-        break;
+// });
 
-      case "room2":
-        socket.join("room2");
-        socket.connectedRoom = "room2";
-        break;
+const teachers: Namespace<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any> = io.of("teachers");
+const students: Namespace<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any> = io.of("students");
 
-      case "room3":
-        socket.join("room3");
-        socket.connectedRoom = "room3";
-        break;
-    }
+teachers.on("connection", socket => {
+  console.log(socket.id + " se ha conectado a la sala de profesores");
+});
 
-  });
-
-  socket.on("message", message => {
-    const room = socket.connectedRoom;
-
-    io.to(room!).emit("send message", {
-      message,
-      room
-    });
-  });
-
+students.on("connection", socket => {
+  console.log(socket.id + " se ha conectado a la sala de estudiantes");
 });
 
 httpServer.listen(3000);

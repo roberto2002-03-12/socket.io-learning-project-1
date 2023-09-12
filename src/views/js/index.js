@@ -1,41 +1,26 @@
-const socket = io();
+// si ponemos esto lo que va hacer es conectarnos al socket que hay
+// por defecto, cosa que no queremos, primero queremos conectar a
+// un namespace especifico
+// const socket = io();
 
-// selecciono mis 3 botones que permitirán conectarme a las salas
-const connectRoom1 = document.querySelector("#connectRoom1");
-const connectRoom2 = document.querySelector("#connectRoom2");
-const connectRoom3 = document.querySelector("#connectRoom3");
+const user = prompt("Escribe tu usuario");
 
-// event para al dar click me conecte a las salas
-connectRoom1.addEventListener("click", () => {
-  socket.emit("connect to room", "room1");
-});
+const profesores = ["RetaxMaster", "juandc", "GNDX"];
 
-connectRoom2.addEventListener("click", () => {
-  socket.emit("connect to room", "room2");
-});
+let socketNameSpace, group;
 
-connectRoom3.addEventListener("click", () => {
-  socket.emit("connect to room", "room3");
-});
+const chat = document.querySelector("#chat");
+const nameSpace = document.querySelector("#namespace");
 
-// enviar mensaje
+if (profesores.includes(user)) {
+  // acá estamos conectando a un namespace especifico
+  socketNameSpace = io("/teachers");
+  group = "teachers";
+} else {
+  socketNameSpace = io("/students");
+  group = "students";
+}
 
-const sendMessage = document.querySelector("#sendMessage");
-
-sendMessage.addEventListener("click", () => {
-  const message = prompt("Escribe tu mensaje");
-  // emit: emitir señal de evento
-  socket.emit("message", message);
-});
-
-// recibir el evento del mensaje
-
-socket.on("send message", data => {
-  const { room } = data;
-  const { message } = data;
-
-  const li = document.createElement("li");
-  li.textContent = message;
-
-  document.querySelector(`#${room}`).append(li);
+socketNameSpace.on("connect", () => {
+  nameSpace.textContent = group;
 });
