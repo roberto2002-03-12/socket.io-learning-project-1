@@ -1,48 +1,26 @@
-// si ponemos esto lo que va hacer es conectarnos al socket que hay
-// por defecto, cosa que no queremos, primero queremos conectar a
-// un namespace especifico
-// const socket = io();
+const socket = io();
 
-const user = prompt("Escribe tu usuario");
+const send = document.querySelector("#send");
+const disconnect = document.querySelector("#disconnect");
+const connect = document.querySelector("#connect");
 
-const profesores = ["RetaxMaster", "juandc", "GNDX"];
-
-let socketNameSpace, group;
-
-const chat = document.querySelector("#chat");
-const nameSpace = document.querySelector("#namespace");
-
-if (profesores.includes(user)) {
-  // acá estamos conectando a un namespace especifico
-  socketNameSpace = io("/teachers");
-  group = "teachers";
-} else {
-  socketNameSpace = io("/students");
-  group = "students";
-}
-
-socketNameSpace.on("connect", () => {
-  nameSpace.textContent = group;
+send.addEventListener("click", () => {
+  // si se desconecta y envias un monton de eventos
+  // al conectarse nuevamente se enviará todos los datos
+  // pendientes, sin embargo, esto no es bueno porque
+  // puedes enviar varios datos y eso sobre carga el buffer
+  // por lo que esta bien poner una condicional
+  if (socket.connected) socket.emit("is connected", "Esta conectado");
 });
 
-// Programar la logica de enviarmensaje
-const sendMessage = document.querySelector("#sendMessage");
+disconnect.addEventListener("click", () => {
 
-sendMessage.addEventListener("click", () => {
-
-  const message = prompt("Escribe tu mensaje, pe bateria");
-  // ya tenemos especificado a que namespaces enviaremos el mensaje
-  socketNameSpace.emit("send message", {
-    message, user
-  });
+  socket.disconnect();
 
 });
 
-socketNameSpace.on("message", messageData => {
-  const { user, message } = messageData;
+connect.addEventListener("click", () => {
 
-  const li = document.createElement("li");
-  li.textContent = `${user}: ${message}`;
+  socket.connect();
 
-  chat.append(li);
 });
