@@ -24,3 +24,25 @@ if (profesores.includes(user)) {
 socketNameSpace.on("connect", () => {
   nameSpace.textContent = group;
 });
+
+// Programar la logica de enviarmensaje
+const sendMessage = document.querySelector("#sendMessage");
+
+sendMessage.addEventListener("click", () => {
+
+  const message = prompt("Escribe tu mensaje, pe bateria");
+  // ya tenemos especificado a que namespaces enviaremos el mensaje
+  socketNameSpace.emit("send message", {
+    message, user
+  });
+
+});
+
+socketNameSpace.on("message", messageData => {
+  const { user, message } = messageData;
+
+  const li = document.createElement("li");
+  li.textContent = `${user}: ${message}`;
+
+  chat.append(li);
+});
