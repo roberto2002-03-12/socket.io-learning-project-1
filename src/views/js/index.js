@@ -24,7 +24,7 @@ const sendMessage = document.querySelector("#sendMessage");
 
 sendMessage.addEventListener("click", () => {
   const message = prompt("Escribe tu mensaje");
-
+  // emit: emitir señal de evento
   socket.emit("message", message);
 });
 
