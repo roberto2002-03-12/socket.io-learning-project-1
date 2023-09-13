@@ -11,6 +11,9 @@ send.addEventListener("click", () => {
   // puedes enviar varios datos y eso sobre carga el buffer
   // por lo que esta bien poner una condicional
   if (socket.connected) socket.emit("is connected", "Esta conectado");
+
+  // en vez de usar el if puedes utilizar socket.volatile.emit
+  // da el mismo resultado que el if, pero sin necesidad de utilizarlo
 });
 
 disconnect.addEventListener("click", () => {
