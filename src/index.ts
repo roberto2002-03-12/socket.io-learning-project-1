@@ -22,11 +22,33 @@ app.get('/', (req: Request, res: Response) => {
   res.sendFile(__dirname + "/views/index.html");
 });
 
+interface CustomError extends Error {
+  data?: {
+    details: string;
+  }
+}
+
+// middleware para determinar si esta autenticado o no
+io.use((socket, next) => {
+  
+  const token: string = socket.handshake.auth.token;
+
+  if (token === 'Mr. Michi es genial') {
+    next();
+  }
+
+  const error: CustomError = new Error("No puedes pasar");
+  error.data = {
+    details: 'No pudiste ser autenticado'
+  }
+
+  next(error);
+
+});
+
 io.on("connection", (socket: ExtendedSocket) => {
 
-  socket.on("is connected", msg => {
-    console.log(msg);
-  });
+
 
 });
 
