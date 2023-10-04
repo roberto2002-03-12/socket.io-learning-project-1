@@ -35,7 +35,7 @@ io.on("connection", socket => {
   });
 
   // emitir un evento basico
-  socket.emit("welcome", "negros nigga nigger");
+  socket.emit("welcome", "hola");
   // recibir evento creado por lado de cliente
   // socket.on("server", data => console.log(data));
   // crear un evento para todos
