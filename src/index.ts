@@ -1,3 +1,7 @@
+// process.env.DEBUG = "*";
+// especificar que paquete filtrar para hacer debugging
+process.env.DEBUG = "engine, socket.io:socket";
+
 import express, { Request, Response } from 'express'
 import path from 'path'
 import { createServer } from 'http';
